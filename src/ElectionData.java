@@ -1,26 +1,18 @@
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Scanner;
 
-// I actually don't think it is required to implement an interface?
-// or is this just good encapsulation practice?
-public class ElectionData implements IElectionData {
+/**
+ * ElectionData for the ballot and votes information.
+ */
+public class ElectionData {
     private HashMap<String, Candidate> candidates =
             new HashMap<String, Candidate>();
-    // Edit the code to use hash tables to store the number of
-    // first, second, and third choice votes for each candidate on a ballot.
-    ElectionData() { }
 
-//    consumes three strings (first, second, third choices, respectfully)
-//    definition respectfully : separately or individually and in the order
-//    already mentioned (used when enumerating two or more items or facts that refer back to a previous statement).
+    public ElectionData() { }
 
-//    produces void
-
-//    this method stores a single voter's choices in your data structure
-//    calling this method corresponds to someone voting in the election
-
+//  helper function to determine if a vote is valid
+//  A vote is only valid if the voter enters three different names, each of which is a candidate on the ballot.
     private boolean isValid(String firstChoice,String secondChoice,String thirdChoice) {
         return ((firstChoice != secondChoice) &&
                 (firstChoice != thirdChoice) &&
@@ -29,9 +21,33 @@ public class ElectionData implements IElectionData {
                 candidates.containsKey(secondChoice) &&
                 candidates.containsKey(thirdChoice));
     }
+
+    //  TODO helper function to determine xyz (add later)
+    private double calculateHalf() {
+        double total = 0;
+
+        for (Map.Entry<String, Candidate> entry : candidates.entrySet()) {
+            total += entry.getValue().getNumOfFirstChoice();
+        }
+        return total / 2;
+    }
+
+    public LinkedList<String> getCandidates() {
+        LinkedList<String>  cans = new LinkedList<>();
+        for(Candidate candidate: candidates.values()) {
+            cans.add(candidate.getName());
+        }
+        return cans;
+    }
+
+//    consumes three strings (first, second, third choices, respectfully)
+//    produces void
+//    this method stores a single voter's choices in your data structure
+//    calling this method corresponds to someone voting in the election
+
     public void processVote(String firstChoice,String secondChoice,String thirdChoice)
     throws DuplicateVotesException, UnknownCandidateException {
-        // gets the first choice winner
+
         if (isValid(firstChoice, secondChoice, thirdChoice)) {
             Candidate first = candidates.get(firstChoice);
             Candidate second = candidates.get(secondChoice);
@@ -40,6 +56,8 @@ public class ElectionData implements IElectionData {
 //       Does this actually update the object in the Hashmap?
 //       Update existing? or do i have to remove what was originally there and then
 //        add them again.
+
+//          I don't think that this is actually updating previously existing
             first.addNumOfFirstChoice();
             second.addNumOfSecondChoice();
             third.addNumOfThirdChoice();
@@ -77,15 +95,6 @@ public class ElectionData implements IElectionData {
             return "Runoff required";
         }
         return winningCandidates.get(0).getName();
-    }
-
-    private double calculateHalf() {
-        double total = 0;
-
-        for (Map.Entry<String, Candidate> entry : candidates.entrySet()) {
-            total += entry.getValue().getNumOfFirstChoice();
-        }
-        return total / 2;
     }
 
 

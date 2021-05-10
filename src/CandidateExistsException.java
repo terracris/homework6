@@ -1,6 +1,10 @@
+/**
+ *
+ */
 public class CandidateExistsException extends Exception {
-    String alreadyExistingCandidate;
-    CandidateExistsException(String name) {
+    private String alreadyExistingCandidate;
+
+    public CandidateExistsException(String name) {
         this.alreadyExistingCandidate = name;
     }
 }
