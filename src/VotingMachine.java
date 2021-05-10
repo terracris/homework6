@@ -33,20 +33,21 @@ public class VotingMachine {
 
         System.out.println("Who is your third choice??");
         String candidate3 = keyboard.next();
-        System.out.println("You voted for " + candidate1);
+        System.out.println("You voted for " + candidate3);
 
 
         try {
             this.electionData.processVote(candidate1, candidate2, candidate3);
-        } catch (UnknownCandidateException unknownCandidate) {
-            System.out.println("Candidate" + unknownCandidate.getName() +
+        } catch (UnknownCandidateException e) {
+            System.out.println("Candidate " + e.getName() +
                     " not found. Would you like to add them to the ballot? Y/N");
             String response = keyboard.next();
             if (response.toLowerCase().equals("y")) {
-                this.addWriteIn(unknownCandidate.getName());
-                this.screen();
+                this.addWriteIn(e.getName());
+            } else {
+                System.out.println("okay, no problem. let's try this vote thing again.");
             }
-
+            this.screen();
         } catch (DuplicateVotesException e) {
             System.out.println("You cannot vote for the same candidate twice.");
             screen();
@@ -57,7 +58,7 @@ public class VotingMachine {
         try {
             this.electionData.addCandidate(name);
         } catch (CandidateExistsException e) {
-            e.printStackTrace();
+            System.out.println("Sorry, this Candidate already exists!");
         }
 
 

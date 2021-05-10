@@ -38,9 +38,9 @@ public class ElectionData {
     }
 
     private boolean isVoteValid(String firstChoice,String secondChoice,String thirdChoice) {
-        return (firstChoice != secondChoice) &&
-                (firstChoice != thirdChoice) &&
-                (secondChoice  != thirdChoice));
+        return (!firstChoice.equals(secondChoice)) &&
+                (!firstChoice.equals(thirdChoice)) &&
+                (!secondChoice.equals(thirdChoice));
     }
 
     private boolean isCandidateValid(String firstChoice,String secondChoice,String thirdChoice) {
@@ -87,11 +87,24 @@ public class ElectionData {
             first.addNumOfFirstChoice();
             second.addNumOfSecondChoice();
             third.addNumOfThirdChoice();
-        } else if(!isVoteValid(firstChoice, secondChoice, thirdChoice)) {
+        } else if(!isCandidateValid(firstChoice, secondChoice, thirdChoice)) {
             // need to modify
-            throw new UnknownCandidateException(secondChoice);
+            LinkedList<String> votes = new LinkedList<>();
+            votes.add(firstChoice);
+            votes.add(secondChoice);
+            votes.add(thirdChoice);
+            for(String name : votes) {
+                if(!candidates.containsKey(name)) {
+                    throw new UnknownCandidateException(name);
+                }
+            }
         } else {
-            throw new DuplicateVotesException(secondChoice);
+            if(firstChoice.equals(secondChoice) || firstChoice.equals(thirdChoice)) {
+                throw new DuplicateVotesException(firstChoice);
+            } else {
+                throw new DuplicateVotesException(secondChoice);
+            }
+
         }
 
     }
