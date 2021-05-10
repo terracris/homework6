@@ -1,15 +1,16 @@
 import java.util.Scanner;
 
+/**
+ * The user interface. Handles the Input/Output.
+ */
 public class VotingMachine {
-//    VotingMachine for the input/output portion
-//    The VotingMachine class should have a variable that holds an object of the ElectionData class.
-//    The VotingMachine class should be where you catch your exceptions
     ElectionData electionData;
     Scanner keyboard = new Scanner(System.in);
 
     public VotingMachine(ElectionData electionData) {
         this.electionData = electionData;
     }
+
 
     public void printBallot() {
     System.out.println("The candidates are ");

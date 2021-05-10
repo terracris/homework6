@@ -11,7 +11,7 @@ public class ElectionData {
 
     public ElectionData() { }
 
-//  helper function to determine if a vote is valid
+//  helper method to determine if a vote is valid
 //  A vote is only valid if the voter enters three different names, each of which is a candidate on the ballot.
     private boolean isValid(String firstChoice,String secondChoice,String thirdChoice) {
         return ((firstChoice != secondChoice) &&
@@ -22,7 +22,7 @@ public class ElectionData {
                 candidates.containsKey(thirdChoice));
     }
 
-    //  TODO helper function to determine xyz (add later)
+    //  helper method to determine 50% of total points
     private double calculateHalf() {
         double total = 0;
 
@@ -32,19 +32,24 @@ public class ElectionData {
         return total / 2;
     }
 
+//    returns a list of candidate names
     public LinkedList<String> getCandidates() {
-        LinkedList<String>  cans = new LinkedList<>();
+        LinkedList<String> cands = new LinkedList<>();
         for(Candidate candidate: candidates.values()) {
-            cans.add(candidate.getName());
+            cands.add(candidate.getName());
         }
-        return cans;
+        return cands;
     }
 
-//    consumes three strings (first, second, third choices, respectfully)
-//    produces void
-//    this method stores a single voter's choices in your data structure
-//    calling this method corresponds to someone voting in the election
 
+    /**
+     * stores a single voter's 3 choices, respectfully, in your data structure
+     * @param firstChoice highest rank vote
+     * @param secondChoice second highest rank vote
+     * @param thirdChoice third highest rank vote
+     * @throws DuplicateVotesException when a vote contains the same candidate twice
+     * @throws UnknownCandidateException when a  vote contains a candidate that had not been previously added
+     */
     public void processVote(String firstChoice,String secondChoice,String thirdChoice)
     throws DuplicateVotesException, UnknownCandidateException {
 
@@ -53,11 +58,20 @@ public class ElectionData {
             Candidate second = candidates.get(secondChoice);
             Candidate third = candidates.get(thirdChoice);
 
+
+           // candidates: C1, C2, C3
+//          vote: c2, c3, c1 // c2, 1, c3
+//            first = c2(2, 0, 0) // 6 points
+//            second = c3(0, 1, 1) // 3 points
+//            third = c1(0,1,1) // 3 points
+
+
 //       Does this actually update the object in the Hashmap?
 //       Update existing? or do i have to remove what was originally there and then
 //        add them again.
 
 //          I don't think that this is actually updating previously existing
+            // TODO actually update the values. needs modification
             first.addNumOfFirstChoice();
             second.addNumOfSecondChoice();
             third.addNumOfThirdChoice();
@@ -65,11 +79,12 @@ public class ElectionData {
 
     }
 
-//    consumes a String (the name of a candidate)
-//    adds the candidate to the ballot
-//    if the candidate was already on the ballot, throw a CandidateExistsException
-//    whose constructor takes the name as its only argument
-//    produces void
+
+    /**
+     * Adds a Candidate to a ballot
+     * @param candidate the name of the Candidate
+     * @throws CandidateExistsException when a Candidate already exists in the ballot
+     */
     public void addCandidate(String candidate) throws CandidateExistsException {
         if(!candidates.containsKey(candidate)) {
             Candidate aCandidate = new Candidate(candidate);
@@ -78,7 +93,11 @@ public class ElectionData {
             throw new CandidateExistsException(candidate);
     }
 
-
+    /**
+     * Determines the winner of the election.
+     * The winner is the candidate with more than 50% of first place votes.
+     * @return the name of the candidate that won the election.
+     */
     public String findWinnerMostFirstVotes() {
         double half = calculateHalf();
         LinkedList<Candidate> winningCandidates = new LinkedList<>();
@@ -90,14 +109,18 @@ public class ElectionData {
                 winningCandidates.add(value);
             }
         }
-
-        if(winningCandidates.size() > 1) {
+        if(winningCandidates.size() == 0) {
             return "Runoff required";
         }
         return winningCandidates.get(0).getName();
     }
 
-
+    /**
+     * Determines the winner of the election.
+     * The winner is the candidate with the most points.
+     * If there is a tie between two or more candidates, the name of any one of the winners is returned
+     * @return the name of the candidate that won the election.
+     */
     public String findWinnerMostPoints() {
         String currentWinner = "";
         double currentMax = 0;

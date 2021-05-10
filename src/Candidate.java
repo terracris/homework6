@@ -1,5 +1,5 @@
 /**
- * A class to represent a candidate in an election.
+ * A candidate in an election.
  */
 public class Candidate {
     private String name;
