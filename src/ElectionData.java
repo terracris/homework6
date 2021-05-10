@@ -14,12 +14,8 @@ public class ElectionData {
 //  helper method to determine if a vote is valid
 //  A vote is only valid if the voter enters three different names, each of which is a candidate on the ballot.
     private boolean isValid(String firstChoice,String secondChoice,String thirdChoice) {
-        return ((firstChoice != secondChoice) &&
-                (firstChoice != thirdChoice) &&
-                (secondChoice  != thirdChoice))
-                && (candidates.containsKey(firstChoice) &&
-                candidates.containsKey(secondChoice) &&
-                candidates.containsKey(thirdChoice));
+        return isVoteValid(firstChoice, secondChoice, thirdChoice)
+                && isCandidateValid(firstChoice, secondChoice, thirdChoice);
     }
 
     //  helper method to determine 50% of total points
@@ -41,7 +37,23 @@ public class ElectionData {
         return cands;
     }
 
+    private boolean isVoteValid(String firstChoice,String secondChoice,String thirdChoice) {
+        return (firstChoice != secondChoice) &&
+                (firstChoice != thirdChoice) &&
+                (secondChoice  != thirdChoice));
+    }
 
+    private boolean isCandidateValid(String firstChoice,String secondChoice,String thirdChoice) {
+        return (candidates.containsKey(firstChoice) &&
+                candidates.containsKey(secondChoice) &&
+                candidates.containsKey(thirdChoice));
+    }
+
+
+    // TODO split the is valid to two seperate helper methods
+    // have one that checks if vote is valid
+    // have the second be is candidate valid.
+    // that way we know which exception to throw.
     /**
      * stores a single voter's 3 choices, respectfully, in your data structure
      * @param firstChoice highest rank vote
@@ -75,6 +87,11 @@ public class ElectionData {
             first.addNumOfFirstChoice();
             second.addNumOfSecondChoice();
             third.addNumOfThirdChoice();
+        } else if(!isVoteValid(firstChoice, secondChoice, thirdChoice)) {
+            // need to modify
+            throw new UnknownCandidateException(secondChoice);
+        } else {
+            throw new DuplicateVotesException(secondChoice);
         }
 
     }
