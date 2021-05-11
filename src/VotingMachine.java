@@ -40,7 +40,7 @@ public class VotingMachine {
             this.electionData.processVote(candidate1, candidate2, candidate3);
         } catch (UnknownCandidateException e) {
             System.out.println("Candidate " + e.getName() +
-                    " not found. Would you like to add them to the ballot? Y/N");
+                    " not found. Would you like to add them to the ballot? (Y/N)");
             String response = keyboard.next();
             if (response.toLowerCase().equals("y")) {
                 this.addWriteIn(e.getName());
@@ -61,7 +61,5 @@ public class VotingMachine {
         } catch (CandidateExistsException e) {
             System.out.println("Sorry, this Candidate already exists!");
         }
-
-
     }
 }

@@ -68,24 +68,7 @@ public class ElectionData {
             Candidate second = candidates.get(secondChoice);
             Candidate third = candidates.get(thirdChoice);
 
-
-//       Does this actually update the object in the Hashmap?
-//       Update existing? or do i have to remove what was originally there and then
-//        add them again.
-
-//          I don't think that this is actually updating previously existing
-            // TODO actually update the values. needs modification
-
-//            for(int i = 0 ; i < contact.size(); i++) {
-//                Contact thisContact = contact.get(i);
-//                if(thisContact.thisAddress.equals(key)) {
-//                    contact.remove(i);
-//                    contact.add(aContact);
-//                    contacts.put(key, contact);
-//                    return;
-//                }
-
-
+//          incrementing the respective votes by one
             first.addNumOfFirstChoice();
             second.addNumOfSecondChoice();
             third.addNumOfThirdChoice();
@@ -97,7 +80,7 @@ public class ElectionData {
 
 
         } else if(!isCandidateValid(firstChoice, secondChoice, thirdChoice)) {
-            // need to modify
+
             LinkedList<String> votes = new LinkedList<>();
             votes.add(firstChoice);
             votes.add(secondChoice);
@@ -139,19 +122,13 @@ public class ElectionData {
      */
     public String findWinnerMostFirstVotes() {
         double half = calculateHalf();
-        LinkedList<Candidate> winningCandidates = new LinkedList<>();
 
-        for(Map.Entry<String, Candidate> entry : candidates.entrySet()) {
-            String key = entry.getKey();
-            Candidate value = entry.getValue();
-            if(value.getNumOfFirstChoice() > half) {
-                winningCandidates.add(value);
+        for(Candidate entry : candidates.values()) {
+            if(entry.getNumOfFirstChoice() > half) {
+                return entry.getName();
             }
         }
-        if(winningCandidates.size() == 0) {
-            return "Runoff required";
-        }
-        return winningCandidates.get(0).getName();
+        return "Runoff required";
     }
 
     /**
@@ -164,8 +141,7 @@ public class ElectionData {
         String currentWinner = "";
         double currentMax = 0;
 
-        for (Map.Entry<String, Candidate> entry : candidates.entrySet()) {
-            Candidate candidate = entry.getValue();
+        for (Candidate candidate : candidates.values()) {
            if(candidate.totalPoints() >= currentMax) {
                currentWinner = candidate.getName();
                currentMax = candidate.totalPoints();
