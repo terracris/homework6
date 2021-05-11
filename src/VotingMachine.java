@@ -57,6 +57,7 @@ public class VotingMachine {
     private void addWriteIn(String name) {
         try {
             this.electionData.addCandidate(name);
+            System.out.println("Candidate added successfully!");
         } catch (CandidateExistsException e) {
             System.out.println("Sorry, this Candidate already exists!");
         }

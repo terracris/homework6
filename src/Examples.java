@@ -8,26 +8,32 @@ public class Examples {
     public void testWinnerByPoints() {
         ElectionData electionData = new ElectionData();
         try {
-            electionData.addCandidate("JositoPocitoSuavcito");
-            electionData.addCandidate("Meanjew");
-            electionData.addCandidate("Bukuria");
+            electionData.addCandidate("James");
+            electionData.addCandidate("Kleo");
+            electionData.addCandidate("Chris");
+            electionData.addCandidate("Seth");
+            electionData.addCandidate("Alex");
+            electionData.addCandidate("Deah");
+            electionData.addCandidate("Husky");
+
+
         } catch(CandidateExistsException e) {
-            System.out.println("oops");
+            System.out.println("oops1");
 
         }
         try {
-            electionData.processVote("Bukuria", "Gompei", "Husky");
-            electionData.processVote("Bukuria", "Husky", "Gompei");
-            electionData.processVote("Bukuria", "Bukuria", "Bukuria");
-            electionData.processVote("Husky", "Bukuria", "Seth");
-            electionData.processVote("Bukuria", "Gompei", "Husky");
-            electionData.processVote("JositoPocitoSuavcito", "Gompei", "Husky");
-            electionData.processVote("Bukuria" , "JositoPocitoSuavcito", "Meanjew");
+            electionData.processVote("Chris", "Alex", "Husky");
+            electionData.processVote("Chris", "Husky", "Alex");
+            electionData.processVote("Chris", "Husky", "Alex");
+            electionData.processVote("Husky", "Chris", "Seth");
+            electionData.processVote("Chris", "Alex", "Husky");
+            electionData.processVote("James", "Alex", "Husky");
+            electionData.processVote("Chris" , "Deah", "Kleo");
         } catch (UnknownCandidateException | DuplicateVotesException e) {
-            System.out.println("oops");
+            System.out.println("oopsxx");
         }
 
-        assertEquals(electionData.findWinnerMostPoints(), "Bukuria");
+        assertEquals(electionData.findWinnerMostPoints(), "Chris");
     }
 
     @Test
@@ -35,47 +41,61 @@ public class Examples {
 
         ElectionData electionData = new ElectionData();
         try {
-            electionData.addCandidate("JositoPocitoSuavcito");
-            electionData.addCandidate("Meanjew");
-            electionData.addCandidate("Bukuria");
+            electionData.addCandidate("James");
+            electionData.addCandidate("Kleo");
+            electionData.addCandidate("Chris");
+            electionData.addCandidate("Seth");
+            electionData.addCandidate("Alex");
+            electionData.addCandidate("Deah");
+            electionData.addCandidate("Husky");
         } catch(CandidateExistsException e) {
-            System.out.println("oops");
-
+            System.out.println("oops2");
         }
         try {
-            electionData.processVote("Bukuria", "Gompei", "Husky");
-            electionData.processVote("Bukuria", "Husky", "Gompei");
-            electionData.processVote("Bukuria", "Bukuria", "Bukuria");
-            electionData.processVote("Husky", "Bukuria", "Seth");
-            electionData.processVote("Bukuria", "Gompei", "Husky");
-            electionData.processVote("JositoPocitoSuavcito", "Gompei", "Husky");
-            electionData.processVote("Bukuria" , "JositoPocitoSuavcito", "Meanjew");
+            electionData.processVote("Chris", "Alex", "Husky");
+            electionData.processVote("Chris", "Husky", "Alex");
+            electionData.processVote("Husky", "Chris", "Seth");
+            electionData.processVote("Chris", "Alex", "Husky");
+            electionData.processVote("Deah", "Alex", "Husky");
+            electionData.processVote("Chris" , "Deah", "Kleo");
         } catch (UnknownCandidateException | DuplicateVotesException e) {
-            System.out.println("oops");
+            System.out.println("oopsyy");
         }
 
-        assertEquals(electionData.findWinnerMostFirstVotes(), "Bukuria");
+        assertEquals("Chris", electionData.findWinnerMostFirstVotes());
     }
 
     @Test
     public void testWinnerByTier1RunoffRequired() {
-
         ElectionData electionData = new ElectionData();
         try {
-            electionData.processVote("Bukuria", "Gompei", "Husky");
-            electionData.processVote("Gompei", "Bukuria", "Husky");
-            electionData.processVote("Husky", "Bukuria", "Gompei");
-        } catch (UnknownCandidateException | DuplicateVotesException e) {
-            System.out.println("oops");
+            electionData.addCandidate("James");
+            electionData.addCandidate("Kleo");
+            electionData.addCandidate("Chris");
+            electionData.addCandidate("Seth");
+            electionData.addCandidate("Alex");
+            electionData.addCandidate("Deah");
+            electionData.addCandidate("Husky");
+        } catch(CandidateExistsException e) {
+            System.out.println("oops1w1");
+
         }
 
-        assertEquals(electionData.findWinnerMostFirstVotes(), "Runoff required");
+        try {
+            electionData.processVote("Chris", "Alex", "Husky");
+            electionData.processVote("Alex", "Chris", "Husky");
+            electionData.processVote("Husky", "Chris", "Alex");
+        } catch (UnknownCandidateException | DuplicateVotesException e) {
+            System.out.println("oops1223333");
+        }
+
+        assertEquals("Runoff required", electionData.findWinnerMostFirstVotes());
     }
 
     @Test
     public void testWinnerByTier1RunoffRequired2() {
         ElectionData electionData = new ElectionData();
-        assertEquals(electionData.findWinnerMostFirstVotes(), "Runoff required");
+        assertEquals("Runoff required", electionData.findWinnerMostFirstVotes());
     }
 
 

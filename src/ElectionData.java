@@ -16,9 +16,24 @@ public class ElectionData {
     private boolean isValid(String firstChoice,String secondChoice,String thirdChoice) {
         return isVoteValid(firstChoice, secondChoice, thirdChoice)
                 && isCandidateValid(firstChoice, secondChoice, thirdChoice);
+
     }
 
-    //  helper method to determine 50% of total points
+//    determines if vote is valid
+    private boolean isVoteValid(String firstChoice,String secondChoice,String thirdChoice) {
+        return (!firstChoice.equals(secondChoice)) &&
+                (!firstChoice.equals(thirdChoice)) &&
+                (!secondChoice.equals(thirdChoice));
+    }
+
+//    determines if candidate is in ballot
+    private boolean isCandidateValid(String firstChoice,String secondChoice,String thirdChoice) {
+        return (candidates.containsKey(firstChoice) &&
+                candidates.containsKey(secondChoice) &&
+                candidates.containsKey(thirdChoice));
+    }
+
+//     helper method to determine 50% of total points
     private double calculateHalf() {
         double total = 0;
 
@@ -37,23 +52,6 @@ public class ElectionData {
         return cands;
     }
 
-    private boolean isVoteValid(String firstChoice,String secondChoice,String thirdChoice) {
-        return (!firstChoice.equals(secondChoice)) &&
-                (!firstChoice.equals(thirdChoice)) &&
-                (!secondChoice.equals(thirdChoice));
-    }
-
-    private boolean isCandidateValid(String firstChoice,String secondChoice,String thirdChoice) {
-        return (candidates.containsKey(firstChoice) &&
-                candidates.containsKey(secondChoice) &&
-                candidates.containsKey(thirdChoice));
-    }
-
-
-    // TODO split the is valid to two seperate helper methods
-    // have one that checks if vote is valid
-    // have the second be is candidate valid.
-    // that way we know which exception to throw.
     /**
      * stores a single voter's 3 choices, respectfully, in your data structure
      * @param firstChoice highest rank vote
@@ -71,22 +69,33 @@ public class ElectionData {
             Candidate third = candidates.get(thirdChoice);
 
 
-           // candidates: C1, C2, C3
-//          vote: c2, c3, c1 // c2, 1, c3
-//            first = c2(2, 0, 0) // 6 points
-//            second = c3(0, 1, 1) // 3 points
-//            third = c1(0,1,1) // 3 points
-
-
 //       Does this actually update the object in the Hashmap?
 //       Update existing? or do i have to remove what was originally there and then
 //        add them again.
 
 //          I don't think that this is actually updating previously existing
             // TODO actually update the values. needs modification
+
+//            for(int i = 0 ; i < contact.size(); i++) {
+//                Contact thisContact = contact.get(i);
+//                if(thisContact.thisAddress.equals(key)) {
+//                    contact.remove(i);
+//                    contact.add(aContact);
+//                    contacts.put(key, contact);
+//                    return;
+//                }
+
+
             first.addNumOfFirstChoice();
             second.addNumOfSecondChoice();
             third.addNumOfThirdChoice();
+
+//            update objects
+            candidates.put(firstChoice, first);
+            candidates.put(secondChoice, second);
+            candidates.put(thirdChoice, third);
+
+
         } else if(!isCandidateValid(firstChoice, secondChoice, thirdChoice)) {
             // need to modify
             LinkedList<String> votes = new LinkedList<>();
